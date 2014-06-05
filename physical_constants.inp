@@ -1,0 +1,5 @@
+half-life(y)         30.2
+diffusion(m2/s)      2.5E-10
+bulk.density(Mg/m3)  1.6
+sorption(m3/Mg)      47
+fluid.porosity(-)    0.8

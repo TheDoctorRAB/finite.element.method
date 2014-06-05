@@ -147,6 +147,52 @@ def spatial_mesh_discretization():
 #
 #
 #
+####### (d): read time steps and count the number of them
+#
+###
+def time_steps():
+###
+# read in the data
+    time_domain=numpy.loadtxt('time_steps.inp')
+###
+# count the number of time steps
+# initialize the counter
+    i=0
+###
+    for line in time_domain:
+        i=i+1
+        tdomain=i
+# end line
+###
+    full_step=tdomain-1
+###
+    return (tdomain,full_step,time_domain)
+#######
+#
+#
+#
+####### (e): initialize the solution matrix
+# this will contain the solution at all time steps
+###
+#
+###
+def initialize_solution_matrix(full_step,node,spatial_mesh,time_domain):
+###
+# initialize the solution matrix
+    radionuclide_concentration=numpy.zeros((full_step*node,4))
+###
+# load in the identifier data into nodal matrix
+    for n in range(0,full_step):
+        for i in range(0,node):
+            radionuclide_concentration[i+n*node,0]=time_domain[n+1]
+            radionuclide_concentration[i+n*node,1]=i+1
+            radionuclide_concentration[i+n*node,2]=spatial_mesh[i]
+# end i
+# end n
+    return(radionuclide_concentration)
+#
+#
+#
 ########################################################################
 #      EOF
 ########################################################################
