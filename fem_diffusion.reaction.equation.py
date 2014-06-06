@@ -110,22 +110,39 @@ import physical_constants as phyc
 #
 ###### preprocessing #######
 #
-###### read in the input data
-# boundary conditions
+###### boundary conditions
 bc1,bc2=side_conditions.side_conditions()
-###
-# physical constants
+#######
+# 
+####### physical constants
 decay_constant,diffusion_coefficient,porosity,retardation=phyc.physical_constants()
-###
-# time steps
+#######
+# 
+####### time steps
 tdomain,full_step,time_domain=fem_f.time_steps()
-###
-# construct the spatial domain
+#######
+# 
+####### construct the spatial domain
 spatial_mesh,h,node,element=fem_f.spatial_mesh_discretization()
-###
-# initialize the solution matrix
+#######
+# 
+####### initialize the solution matrix
 radionuclide_concentration=fem_f.initialize_solution_matrix(full_step,node,spatial_mesh,time_domain)
-numpy.savetxt('sol.out',radionuclide_concentration)
+####### 
+# 
+####### formulate position transformation to isoparamteric space
+local_parametric_mapping=fem_f.isoparametric_mapping(node,element,spatial_mesh,h)
+#######
+# 
+####### make the isoparametric shape functions
+shape_function,dshape_function=fem_f.make_shape_functions()
+#######
+#
+####### end preprocessing #######
+#
+#
+#
+########################################################################
 
 
 

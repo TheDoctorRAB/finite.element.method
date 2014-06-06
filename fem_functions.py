@@ -40,7 +40,7 @@ def evaluation_linear(m,x,b):
 ###
     y=m*x+b
     return y
-#######
+########################################################################
 #
 #
 #
@@ -100,7 +100,7 @@ def gaussian_quadrature_linear(jacobian,slope_m1,intercept_b1,slope_m2,intercept
 # end k
 ###
     return integral_response
-#######
+########################################################################
 #
 #
 #
@@ -143,7 +143,7 @@ def spatial_mesh_discretization():
 # end e  
 ###
     return (spatial_mesh,h,node,element)
-#######
+########################################################################
 #
 #
 #
@@ -167,7 +167,7 @@ def time_steps():
     full_step=tdomain-1
 ###
     return (tdomain,full_step,time_domain)
-#######
+########################################################################
 #
 #
 #
@@ -189,9 +189,65 @@ def initialize_solution_matrix(full_step,node,spatial_mesh,time_domain):
             radionuclide_concentration[i+n*node,2]=spatial_mesh[i]
 # end i
 # end n
+###
     return(radionuclide_concentration)
+########################################################################
 #
 #
+#
+####### (e): formulate position transformation to isoparamteric space
+# transforms x position is real space to x(xi) in iso-space
+# the function takes the form: m*xi+b and the lpm matrix stores m and b
+# the domain is -1 < xi < 1 in the isoparametric space
+# this would be needed if the physical parameters are not constant
+# for example, diffusion coefficient, D=f(x)
+###
+#
+###
+def isoparametric_mapping(node,element,spatial_mesh,h):
+###
+# initialize lpm matrix
+    local_parametric_mapping=numpy.zeros((element,3))
+###
+# load the lpm matrix
+    for e in range(0,element):
+        local_parametric_mapping[e,0]=e
+        local_parametric_mapping[e,1]=0.5*h[e]
+        local_parametric_mapping[e,2]=spatial_mesh[e]+0.5*h[e]
+# end e
+###
+    return(local_parametric_mapping)
+########################################################################
+#
+#
+#
+####### (f): make the isoparametric shape functions
+# shape functions are the linear functions in the iso-space
+# d* are the derivatives
+###
+#
+###
+def make_shape_functions():
+###
+# initialize the matrices
+    shape_function=numpy.zeros((2,2))
+    dshape_function=numpy.zeros((2))
+###
+# make functions
+# they are stored as m and b 
+# phi(xi)=m*xi+b
+    shape_function[0,0]=-0.5
+    shape_function[0,1]=0.5
+    shape_function[1,0]=0.5
+    shape_function[1,1]=0.5
+#
+    dshape_function[0]=-0.5
+    dshape_function[1]=0.5
+###
+    return(shape_function,dshape_function)    
+########################################################################
+#
+#    
 #
 ########################################################################
 #      EOF
