@@ -21,7 +21,8 @@ def side_conditions():
     conditions=numpy.loadtxt('side_conditions.inp')
     bc1=conditions[0]
     bc2=conditions[1]
-    return (bc1,bc2)
+    time=conditions[2]
+    return (bc1,bc2,time)
 #######
 #
 #
